@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="neutral">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0c0d0b">
+  <meta name="description" content="Una guía visual para empezar con Claude o ChatGPT. Analogías, ejemplos y primeros pasos, sin conocimientos previos.">
+  <title>Entendiendo la IA · Guía para empezar</title>
+  <meta property="og:title" content="Entendiendo la IA · Guía para empezar">
+  <meta property="og:description" content="Una guía visual y sin tecnicismos para empezar con Claude o ChatGPT.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23251b12'/%3E%3Ctext x='50' y='68' font-size='58' text-anchor='middle' fill='%23efbb83'%3E%E2%9C%B3%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { color-scheme: dark; --bg:#171916; --panel:#22251f; --panel-2:#2a2d26; --ink:#f4f1e9; --muted:#bcbfb1; --accent:#efbb83; --accent-dark:#251b12; --accent-rgb:239,187,131; --line:#3c4035; --serif:Georgia,'Times New Roman',serif; --sans:Inter,'Segoe UI',Arial,sans-serif; }
+    * { box-sizing:border-box; }
+    html,body { margin:0; height:100%; }
+    body { font-family:var(--sans); background:var(--bg); color:var(--ink); overflow:hidden; -webkit-font-smoothing:antialiased; }
+    button,a,textarea { -webkit-tap-highlight-color:transparent; }
+    button { font:inherit; cursor:pointer; }
+    a { color:var(--accent); text-underline-offset:4px; }
+    button:focus-visible,a:focus-visible,textarea:focus-visible { outline:3px solid var(--accent); outline-offset:5px; }
+    button:disabled { opacity:.35; cursor:default; }
+    [hidden] { display:none!important; }
+    .app { height:100%; height:100dvh; display:grid; grid-template-rows:auto minmax(0,1fr) auto; background:radial-gradient(ellipse at 93% 10%,rgba(var(--accent-rgb),.07),transparent 48%); }
+    .topbar { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:22px clamp(20px,4vw,64px); border-bottom:1px solid var(--line); }
+    .brand { display:flex; align-items:center; gap:12px; font-size:14px; letter-spacing:.02em; }
+    .brand-mark { color:var(--accent); font-size:30px; line-height:1; }
+    .brand strong { font-weight:650; }
+    .brand small { display:block; margin-top:3px; color:var(--muted); font-size:11px; letter-spacing:.1em; text-transform:uppercase; }
+    .top-actions { display:flex; gap:10px; align-items:center; }
+    .quiet-button { border:1px solid var(--line); color:var(--muted); background:transparent; padding:10px 14px; border-radius:100px; font-size:12px; min-height:40px; }
+    .quiet-button:hover { color:var(--ink); border-color:var(--accent); }
+    .theme-dot { display:inline-block; width:7px; height:7px; border-radius:50%; background:var(--accent); margin-right:7px; }
+    .viewport { position:relative; overflow:auto; overscroll-behavior:contain; touch-action:pan-y; scrollbar-color:var(--line) var(--bg); }
+    #slides { height:100%; }
+    .slide { width:min(1180px,100%); margin:0 auto; min-height:100%; padding:38px clamp(24px,5vw,64px) 30px; display:flex; flex-direction:column; justify-content:center; gap:22px; }
+    .slide.active { animation:enter .4s ease both; }
+    @keyframes enter { from { opacity:0; transform:translateY(15px); } to { opacity:1; transform:translateY(0); } }
+    .slide-top { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+    .eyebrow { color:var(--accent); text-transform:uppercase; letter-spacing:.17em; font-size:11px; font-weight:700; }
+    .tag,.badge { border:1px solid var(--line); color:var(--muted); border-radius:100px; padding:5px 9px; font-size:11px; line-height:1.3; }
+    .badge { color:#f5d79e; border-color:#746142; background:#332d20; display:inline-block; }
+    h1,h2,h3,p,blockquote { margin:0; }
+    h1,h2 { font-family:var(--serif); font-weight:400; letter-spacing:-.045em; line-height:1.06; text-wrap:balance; }
+    h1 { font-size:clamp(44px,5.8vw,82px); }
+    h2 { font-size:clamp(34px,4.8vw,62px); }
+    h3 { font-size:clamp(18px,2vw,24px); font-weight:600; letter-spacing:-.025em; line-height:1.2; }
+    .accent { color:var(--accent); }
+    .lead { font-size:clamp(17px,1.9vw,23px); color:var(--muted); line-height:1.5; max-width:740px; text-wrap:pretty; }
+    .small { font-size:12px; color:var(--muted); line-height:1.55; }
+    .analogy { display:flex; align-items:flex-start; gap:12px; font-size:clamp(15px,1.6vw,19px); line-height:1.5; color:var(--muted); }
+    .analogy .analogy-icon { flex:none; color:var(--accent); font-size:22px; }
+    .analogy strong { color:var(--ink); font-weight:550; }
+    .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; }
+    .grid.three { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    .panel { border:1px solid var(--line); border-radius:20px; background:var(--panel); padding:24px; }
+    .panel.emphasis { border-color:rgba(var(--accent-rgb),.55); background:rgba(var(--accent-rgb),.07); }
+    .panel .emoji { display:block; font-size:42px; margin-bottom:15px; line-height:1.1; }
+    .panel p { font-size:17px; color:var(--muted); line-height:1.55; margin-top:10px; }
+    .panel .mini-example { padding-top:13px; border-top:1px solid var(--line); margin-top:16px; color:var(--ink); font-size:15px; }
+    .example { padding:17px 22px; border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 14px 14px 0; background:var(--panel); font-size:clamp(16px,1.75vw,21px); line-height:1.5; }
+    .example small { display:block; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); margin-bottom:6px; }
+    .source-line { margin-top:2px; display:flex; gap:14px; align-items:center; justify-content:space-between; }
+    .source-link { font-size:11px; color:var(--muted); flex-shrink:0; }
+    .choice-slide { gap:24px; }
+    .choices { display:grid; grid-template-columns:1fr 1fr; gap:22px; }
+    .choice { text-align:left; border:1px solid var(--line); border-radius:24px; padding:30px; position:relative; overflow:hidden; background:var(--panel); color:var(--ink); transition:transform .2s,border-color .2s; }
+    .choice:hover { transform:translateY(-5px); border-color:var(--card-accent); }
+    .choice.claude { --card-accent:#eda784; background:linear-gradient(140deg,#34291f,var(--panel) 65%); }
+    .choice.chatgpt { --card-accent:#8edcc1; background:linear-gradient(140deg,#20332d,var(--panel) 65%); }
+    .choice .choice-symbol { display:flex; align-items:center; justify-content:center; width:65px; height:65px; border:1px solid var(--card-accent); color:var(--card-accent); border-radius:20px; font-size:42px; margin-bottom:26px; }
+    .choice-name { display:block; font-family:var(--serif); font-size:42px; letter-spacing:-.03em; }
+    .choice-maker { display:block; color:var(--card-accent); font-size:13px; margin:9px 0 26px; }
+    .choice-cta { display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--line); padding-top:18px; font-size:14px; }
+    .choice-cta span:last-child { font-size:23px; color:var(--card-accent); }
+    .cover-layout { display:grid; grid-template-columns:1.3fr 1fr; gap:45px; align-items:center; }
+    .cover-copy { display:grid; gap:22px; }
+    .cover-copy .subtitle { font-size:clamp(22px,2.5vw,32px); line-height:1.3; }
+    .cover-art { position:relative; width:100%; max-width:370px; aspect-ratio:1; margin:auto; }
+    .orbit { position:absolute; inset:6%; border:1px solid var(--line); border-radius:50%; }
+    .orbit.inner { inset:20%; border-style:dashed; transform:rotate(-25deg); }
+    .assistant { position:absolute; inset:29%; display:flex; justify-content:center; align-items:center; border-radius:32%; background:var(--accent); color:var(--accent-dark); box-shadow:0 0 70px rgba(var(--accent-rgb),.13); }
+    .assistant svg { width:68%; height:68%; }
+    .orbit-item { position:absolute; border:1px solid var(--line); background:var(--panel); border-radius:18px; width:70px; height:70px; display:grid; place-items:center; font-size:34px; }
+    .orbit-item.one { top:0; left:39%; transform:rotate(-9deg); }
+    .orbit-item.two { top:43%; right:0; transform:rotate(9deg); }
+    .orbit-item.three { bottom:0; left:37%; transform:rotate(-7deg); }
+    .orbit-item.four { top:40%; left:0; transform:rotate(7deg); }
+    .flow { display:flex; gap:14px; align-items:stretch; }
+    .flow-node { flex:1; text-align:center; padding:22px 12px; background:var(--panel); border:1px solid var(--line); border-radius:18px; }
+    .flow-node .emoji { display:block; font-size:37px; margin-bottom:12px; }
+    .flow-node strong { font-size:20px; font-weight:550; }
+    .flow-node small { display:block; color:var(--muted); margin-top:8px; font-size:13px; line-height:1.5; }
+    .flow-node.middle { background:rgba(var(--accent-rgb),.1); border-color:rgba(var(--accent-rgb),.5); }
+    .flow-arrow { align-self:center; font-size:26px; color:var(--accent); }
+    .autocomplete { display:flex; align-items:center; gap:12px; flex-wrap:wrap; font-size:22px; }
+    .word { border-radius:9px; background:var(--accent); color:var(--accent-dark); padding:7px 14px; font-weight:600; }
+    .check-list { padding:0; list-style:none; display:grid; gap:12px; margin:16px 0 0; font-size:17px; line-height:1.45; }
+    .check-list li { display:flex; align-items:flex-start; gap:10px; }
+    .check-list li span { color:var(--accent); flex:none; }
+    .practice { display:flex; gap:20px; flex-wrap:wrap; padding:15px 20px; background:var(--panel); border-radius:12px; font-size:14px; color:var(--muted); }
+    .formula { display:flex; align-items:center; gap:15px; justify-content:center; padding:16px; border-radius:14px; background:rgba(var(--accent-rgb),.08); font-size:clamp(17px,2vw,24px); }
+    .formula strong { font-weight:550; color:var(--accent); }
+    .prompt-panel blockquote { font-size:clamp(18px,2.1vw,25px); line-height:1.45; margin-top:16px; }
+    .prompt-panel .hint { margin-top:15px; font-size:14px; }
+    .chat-layout { display:grid; grid-template-columns:.85fr 1.15fr; gap:32px; align-items:center; }
+    .chat-notes { display:grid; gap:19px; }
+    .chat-window { border:1px solid var(--line); background:var(--panel); border-radius:20px; overflow:hidden; }
+    .window-bar { border-bottom:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; padding:15px 20px; font-size:13px; }
+    .window-bar small { color:var(--muted); font-size:10px; }
+    .chat-messages { padding:22px; display:grid; gap:17px; font-size:16px; line-height:1.5; }
+    .message { border-radius:14px; padding:14px 17px; max-width:94%; }
+    .message.user { justify-self:end; background:var(--panel-2); }
+    .message.ai { padding:0 10px 0 0; }
+    .message.ai .speaker { color:var(--accent); display:block; font-size:11px; font-weight:700; margin-bottom:7px; }
+    .message.user small { display:block; font-size:10px; color:var(--muted); margin-bottom:4px; }
+    .chat-input { margin:0 20px 20px; padding:12px 16px; border:1px solid var(--line); border-radius:12px; color:var(--muted); font-size:12px; display:flex; justify-content:space-between; }
+    .chat-input span:last-child { color:var(--accent); }
+    .task-board { padding:24px; background:var(--panel); border:1px solid var(--line); border-radius:20px; display:grid; gap:17px; }
+    .task-row { display:flex; align-items:center; gap:15px; font-size:18px; }
+    .task-row span { font-size:30px; }
+    .task-row small { display:block; margin-top:3px; color:var(--muted); font-size:13px; }
+    .task-rule { height:1px; background:var(--line); }
+    .terminal { border:1px solid var(--line); border-radius:18px; background:#111510; padding:23px; font-family:ui-monospace,Consolas,monospace; }
+    .terminal .terminal-label { color:var(--muted); text-transform:uppercase; font-size:10px; letter-spacing:.13em; margin-bottom:21px; }
+    .terminal p { font-size:16px; line-height:1.55; }
+    .terminal p span { color:var(--accent); }
+    .terminal .result { padding-top:20px; color:var(--muted); font-family:var(--sans); font-size:14px; }
+    .site-mini { border:1px solid var(--line); border-radius:18px; background:var(--panel); padding:22px; position:relative; overflow:hidden; }
+    .site-mini .site-label { font-size:11px; color:var(--muted); margin-bottom:22px; }
+    .site-mini h3 { font-family:var(--serif); font-size:32px; }
+    .site-mini p { font-size:14px; color:var(--muted); margin-top:12px; }
+    .site-mini .fake-button { display:inline-block; margin-top:21px; background:var(--accent); color:var(--accent-dark); border-radius:9px; padding:10px 16px; font-size:12px; font-weight:600; }
+    .app-network { display:flex; justify-content:center; align-items:center; gap:25px; padding:24px; border:1px solid var(--line); border-radius:20px; background:var(--panel); }
+    .network-center { min-width:140px; border-radius:18px; background:var(--accent); color:var(--accent-dark); text-align:center; padding:24px 15px; font-weight:650; font-size:20px; }
+    .network-center span { display:block; font-size:35px; margin-bottom:12px; }
+    .network-key { font-size:32px; }
+    .network-apps { display:grid; gap:10px; min-width:160px; }
+    .network-apps div { border:1px solid var(--line); border-radius:12px; padding:10px 17px; font-size:15px; }
+    .recipe { display:grid; gap:13px; }
+    .recipe-step { display:flex; gap:13px; align-items:flex-start; line-height:1.45; font-size:17px; }
+    .recipe-step span { display:grid; place-items:center; flex:none; width:27px; height:27px; color:var(--accent); background:rgba(var(--accent-rgb),.1); border-radius:50%; font-size:12px; }
+    .toolbox { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:20px; }
+    .toolbox div { padding:16px 10px; border:1px solid var(--line); border-radius:13px; text-align:center; font-size:13px; line-height:1.4; }
+    .toolbox span { display:block; font-size:29px; margin-bottom:8px; }
+    .map { list-style:none; padding:0; margin:0; display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:12px; }
+    .map li { position:relative; border:1px solid var(--line); border-radius:16px; background:var(--panel); padding:20px 16px; }
+    .map li:not(:last-child)::after { content:'→'; position:absolute; right:-12px; top:29px; color:var(--accent); z-index:1; font-size:20px; }
+    .map .map-icon { font-size:31px; display:block; margin-bottom:15px; }
+    .map h3 { font-size:19px; }
+    .map .map-function { color:var(--accent); font-size:14px; margin-top:7px; }
+    .map .map-product { font-size:12px; line-height:1.5; color:var(--muted); margin-top:14px; }
+    .map .badge { font-size:9px; margin-top:8px; border-radius:8px; padding:4px 5px; }
+    .security-card { display:grid; gap:15px; }
+    .security-card p { margin:0; }
+    .install-link { display:flex; align-items:center; gap:16px; flex-wrap:wrap; padding:18px 24px; border:2px solid var(--accent); border-radius:18px; background:var(--panel); color:var(--ink); text-decoration:none; width:fit-content; max-width:100%; transition:transform .2s, background .2s; }
+    .install-link:hover, .install-link:focus-visible { transform:translateY(-2px); background:rgba(var(--accent-rgb),.12); }
+    .install-link strong { font-family:var(--serif); font-size:clamp(26px,4vw,42px); color:var(--accent); font-weight:500; }
+    .install-link-label { font-size:13px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
+    .install-extra { grid-template-columns:1fr 1fr; gap:14px; } .install-extra .panel { padding:16px 20px; } .install-extra h3 { font-size:18px; margin:0 0 6px; } .install-extra p { margin:4px 0; font-size:15px; }
+    @media (max-width:760px){ .install-extra { grid-template-columns:1fr; } }
+    .inline-link { color:var(--accent); }
+    .panel code { font-family:ui-monospace,Consolas,monospace; font-size:14px; word-break:break-all; color:var(--accent); }
+    .steps { list-style:none; padding:0; margin:0; display:grid; grid-template-columns:repeat(3,1fr); gap:16px; counter-reset:steps; }
+    .steps li { counter-increment:steps; display:flex; align-items:flex-start; gap:14px; font-size:17px; line-height:1.5; padding:18px; border:1px solid var(--line); border-radius:15px; }
+    .steps li::before { content:counter(steps,decimal-leading-zero); font-family:var(--serif); font-size:28px; color:var(--accent); line-height:1.2; }
+    .copy-card { border:1px solid rgba(var(--accent-rgb),.5); background:rgba(var(--accent-rgb),.07); border-radius:20px; padding:22px; display:grid; gap:15px; }
+    .copy-top { display:flex; align-items:center; justify-content:space-between; gap:15px; }
+    .copy-top span { font-size:11px; color:var(--accent); letter-spacing:.13em; text-transform:uppercase; }
+    .copy-prompt { color:var(--ink); font:inherit; font-size:clamp(16px,1.8vw,21px); line-height:1.5; border:0; padding:0; background:transparent; resize:none; width:100%; height:4.6em; }
+    .button-primary { background:var(--accent); color:var(--accent-dark); border:1px solid var(--accent); border-radius:100px; padding:11px 21px; font-size:13px; font-weight:650; min-height:44px; }
+    .button-primary:hover { filter:brightness(1.08); }
+    .closing-links { display:flex; align-items:center; gap:18px; flex-wrap:wrap; }
+    .closing-links a { font-size:13px; }
+    .footer { padding:15px clamp(20px,4vw,64px) max(18px,env(safe-area-inset-bottom)); border-top:1px solid var(--line); }
+    .footer-main { display:flex; align-items:center; justify-content:space-between; gap:16px; }
+    .navigation { display:flex; gap:10px; align-items:center; }
+    .nav-button { width:44px; height:44px; display:grid; place-items:center; background:var(--panel); color:var(--ink); border:1px solid var(--line); border-radius:50%; font-size:21px; }
+    .nav-button.next { background:var(--accent); color:var(--accent-dark); border-color:var(--accent); }
+    .page-counter { font-size:13px; color:var(--muted); font-variant-numeric:tabular-nums; min-width:61px; text-align:center; }
+    .page-counter strong { color:var(--ink); font-weight:600; }
+    .footer-caption { font-size:12px; color:var(--muted); }
+    .keyboard-hint { color:var(--muted); font-size:11px; }
+    kbd { font:inherit; border:1px solid var(--line); border-radius:4px; padding:2px 5px; }
+    .progress { margin-top:13px; height:3px; width:100%; border-radius:10px; background:var(--line); overflow:hidden; }
+    .progress-fill { height:100%; width:0; background:var(--accent); transition:width .4s ease; }
+    dialog { width:min(550px,calc(100% - 32px)); border:1px solid var(--line); border-radius:24px; background:var(--bg); color:var(--ink); padding:27px; max-height:85dvh; overflow:auto; }
+    dialog::backdrop { background:#070907b8; backdrop-filter:blur(7px); }
+    .dialog-top { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:18px; }
+    .dialog-top h2 { font-size:32px; }
+    .dialog-top button { background:var(--panel); color:var(--ink); border:1px solid var(--line); border-radius:50%; width:40px; height:40px; font-size:20px; }
+    dialog .choices { gap:13px; margin-top:21px; }
+    dialog .choice { padding:21px; }
+    dialog .choice-name { font-size:29px; }
+    dialog .choice-symbol { width:44px; height:44px; font-size:28px; border-radius:13px; margin-bottom:15px; }
+    dialog .choice-maker { margin-bottom:0; }
+    .source-list { padding-left:20px; display:grid; gap:16px; line-height:1.5; font-size:15px; margin:24px 0; }
+    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+    .toast { position:fixed; bottom:115px; left:50%; transform:translateX(-50%); border:1px solid var(--accent); border-radius:12px; padding:13px 20px; background:var(--panel); color:var(--ink); font-size:14px; z-index:10; box-shadow:0 8px 30px #0005; max-width:calc(100% - 32px); text-align:center; }
+    noscript { display:block; padding:30px; line-height:1.5; }
+    @media (min-width:900px) and (max-height:780px) { .topbar { padding-top:14px; padding-bottom:14px; } .slide { padding-top:25px; padding-bottom:25px; gap:18px; } h1 { font-size:64px; } h2 { font-size:49px; } .panel { padding:20px; } .cover-art { max-width:320px; } .choice { padding:24px; } .choice .choice-symbol { margin-bottom:20px; } }
+    @media (max-width:760px) { .topbar { padding:15px 20px; } .brand small { font-size:9px; } .top-actions { gap:7px; } .quiet-button { padding:9px 11px; } .fullscreen-label { display:none; } .slide { gap:20px; justify-content:flex-start; padding:30px 24px; } .grid.three { grid-template-columns:1fr; } .cover-layout { grid-template-columns:1fr; gap:28px; } .cover-art { max-width:250px; } .cover-copy { gap:18px; } .cover-art .orbit-item { width:52px; height:52px; font-size:26px; border-radius:15px; } .chat-layout { grid-template-columns:1fr; gap:22px; } .map { grid-template-columns:1fr; gap:11px; } .map li { display:grid; grid-template-columns:45px 1fr 1.2fr; align-items:center; gap:10px; padding:16px; } .map .map-icon { margin:0; } .map .map-function { margin-top:4px; font-size:12px; } .map .map-product { margin:0; } .map li:not(:last-child)::after { content:'↓'; right:auto; left:28px; top:auto; bottom:-16px; } .map .badge { grid-column:3; margin:0; } .keyboard-hint { display:none; } .steps { grid-template-columns:1fr; gap:10px; } .steps li { padding:14px 17px; } .footer-caption { font-size:11px; } .copy-prompt { height:6.2em; } .panel .emoji { font-size:35px; } .panel { padding:21px; } }
+    @media (max-width:520px) { .choices { gap:13px; } .choice { padding:20px 17px; border-radius:19px; } .choice-name { font-size:33px; } .choice-maker { margin-bottom:20px; } .choice .choice-symbol { width:51px; height:51px; font-size:33px; border-radius:15px; margin-bottom:21px; } .choice-cta { font-size:12px; } .grid { grid-template-columns:1fr; gap:14px; } .flow { flex-direction:column; gap:8px; } .flow-node { display:grid; grid-template-columns:40px 1fr; text-align:left; align-items:center; padding:15px 19px; gap:0 14px; } .flow-node .emoji { grid-row:1/3; margin:0; font-size:30px; } .flow-node strong { font-size:18px; } .flow-node small { grid-column:2; margin-top:3px; } .flow-arrow { transform:rotate(90deg); font-size:21px; line-height:1; } .formula { gap:9px; font-size:16px; padding:15px 10px; } .practice { gap:10px; flex-direction:column; } .app-network { gap:13px; padding:17px; flex-wrap:wrap; } .network-center { min-width:112px; font-size:17px; padding:18px 12px; } .network-apps { min-width:115px; } .network-apps div { padding:10px; font-size:13px; } .network-key { font-size:24px; } .toolbox { gap:7px; } .toolbox div { padding:13px 7px; font-size:11px; } .copy-prompt { height:7.8em; } .source-line { align-items:flex-start; } dialog { padding:22px; } dialog .choice { padding:17px 12px; } dialog .choice-name { font-size:26px; } .footer { padding:12px 20px max(15px,env(safe-area-inset-bottom)); } .footer-caption { max-width:130px; line-height:1.4; } }
+    @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none!important; transition:none!important; scroll-behavior:auto!important; } }
+  
+    /* ===== Mejora visual v2 ===== */
+    :root { --serif:'Fraunces',Georgia,'Times New Roman',serif; --sans:'Plus Jakarta Sans',Inter,'Segoe UI',Arial,sans-serif; --bg:#0f100d; --panel:rgba(255,255,255,.045); --panel-2:rgba(255,255,255,.08); --line:rgba(255,255,255,.12); --glow:rgba(var(--accent-rgb),.35); }
+    body { background:#0c0d0b; }
+    .bg-fx { position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none; }
+    .bg-fx .blob { position:absolute; border-radius:50%; filter:blur(90px); opacity:.55; background:var(--accent); transition:background 1s; animation:drift 22s ease-in-out infinite alternate; }
+    .bg-fx .b1 { width:46vmax; height:46vmax; top:-18vmax; right:-12vmax; opacity:.32; }
+    .bg-fx .b2 { width:38vmax; height:38vmax; bottom:-20vmax; left:-14vmax; opacity:.2; animation-duration:28s; animation-delay:-8s; }
+    .bg-fx .b3 { width:24vmax; height:24vmax; top:35%; left:38%; opacity:.09; animation-duration:34s; animation-delay:-15s; }
+    .bg-fx .grid-lines { position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px); background-size:56px 56px; mask-image:radial-gradient(ellipse at 50% 40%,#000 15%,transparent 72%); -webkit-mask-image:radial-gradient(ellipse at 50% 40%,#000 15%,transparent 72%); }
+    .bg-fx .grain { position:absolute; inset:0; opacity:.07; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+    @keyframes drift { from { transform:translate(0,0) scale(1); } to { transform:translate(6vmax,5vmax) scale(1.18); } }
+    .app { position:relative; z-index:1; background:none; }
+    .topbar { border-bottom:1px solid var(--line); background:rgba(12,13,11,.55); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); }
+    .brand-mark { text-shadow:0 0 22px var(--glow); animation:spin 14s linear infinite; display:inline-block; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .quiet-button { background:rgba(255,255,255,.04); backdrop-filter:blur(8px); transition:all .2s; }
+    .quiet-button:hover { background:rgba(var(--accent-rgb),.14); box-shadow:0 0 0 4px rgba(var(--accent-rgb),.08); }
+
+    h1,h2 { font-weight:600; letter-spacing:-.04em; }
+    h1 { font-size:clamp(48px,7vw,102px); line-height:1; }
+    h2 { font-size:clamp(36px,5.4vw,72px); }
+    h1 .accent, h2 .accent { background:linear-gradient(100deg,var(--accent),#fff 130%); -webkit-background-clip:text; background-clip:text; color:transparent; }
+    h2 { background:linear-gradient(180deg,#fff 30%,rgba(255,255,255,.72)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+    .eyebrow { display:inline-flex; align-items:center; gap:8px; padding:6px 13px; border-radius:100px; background:rgba(var(--accent-rgb),.12); border:1px solid rgba(var(--accent-rgb),.3); font-size:11px; }
+    .eyebrow::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--accent); box-shadow:0 0 10px var(--accent); }
+    .lead { font-size:clamp(18px,2vw,25px); color:#d4d6cb; }
+
+    .panel,.example,.flow-node,.chat-window,.task-board,.terminal,.site-mini,.app-network,.map li,.steps li,.practice,.toolbox div,.network-apps div { background:linear-gradient(155deg,rgba(255,255,255,.075),rgba(255,255,255,.025)); border:1px solid var(--line); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); box-shadow:0 18px 40px -22px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.07); }
+    .panel,.flow-node,.map li,.steps li,.toolbox div { transition:transform .3s cubic-bezier(.2,.8,.2,1), border-color .3s, box-shadow .3s; }
+    .panel:hover,.flow-node:hover,.map li:hover,.steps li:hover,.toolbox div:hover { transform:translateY(-6px); border-color:rgba(var(--accent-rgb),.6); box-shadow:0 26px 50px -22px rgba(0,0,0,.8), 0 0 40px -10px var(--glow), inset 0 1px 0 rgba(255,255,255,.1); }
+    .panel.emphasis,.flow-node.middle,.copy-card { background:linear-gradient(155deg,rgba(var(--accent-rgb),.2),rgba(var(--accent-rgb),.05)); border-color:rgba(var(--accent-rgb),.55); box-shadow:0 0 50px -14px var(--glow), inset 0 1px 0 rgba(255,255,255,.1); }
+    .panel .emoji,.flow-node .emoji,.map .map-icon,.task-row span { filter:drop-shadow(0 8px 14px rgba(0,0,0,.45)); }
+    .panel .emoji { font-size:42px; display:grid; place-items:center; width:72px; height:72px; border-radius:22px; background:rgba(var(--accent-rgb),.12); border:1px solid rgba(var(--accent-rgb),.25); margin-bottom:16px; animation:float 5s ease-in-out infinite; }
+    .grid > .panel:nth-child(2) .emoji { animation-delay:-1.6s; } .grid > .panel:nth-child(3) .emoji { animation-delay:-3.2s; }
+    @keyframes float { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-7px); } }
+    .analogy { padding:16px 20px; border-radius:18px; background:rgba(var(--accent-rgb),.08); border:1px dashed rgba(var(--accent-rgb),.4); color:#d9dbd0; align-items:center; }
+    .analogy .analogy-icon { width:34px; height:34px; border-radius:50%; background:var(--accent); color:var(--accent-dark); display:grid; place-items:center; font-size:18px; }
+    .example { border-left:4px solid var(--accent); }
+    .word { box-shadow:0 8px 24px -8px var(--glow); }
+    .badge { background:rgba(245,215,158,.12); }
+    .check-list li span { width:24px; height:24px; border-radius:50%; background:rgba(var(--accent-rgb),.18); display:grid; place-items:center; font-size:13px; }
+
+    .flow-arrow { font-size:32px; animation:nudge 1.6s ease-in-out infinite; text-shadow:0 0 18px var(--glow); }
+    @keyframes nudge { 50% { transform:translateX(6px); } }
+    .map li:not(:last-child)::after { animation:nudge 1.6s ease-in-out infinite; }
+    .steps li::before { font-size:44px; font-weight:600; background:linear-gradient(180deg,var(--accent),rgba(var(--accent-rgb),.3)); -webkit-background-clip:text; background-clip:text; color:transparent; line-height:1; }
+
+    .choice { background:linear-gradient(150deg,rgba(255,255,255,.08),rgba(255,255,255,.02)); backdrop-filter:blur(12px); box-shadow:0 30px 60px -30px rgba(0,0,0,.8); transition:transform .35s cubic-bezier(.2,.8,.2,1), border-color .3s, box-shadow .35s; }
+    .choice::before { content:''; position:absolute; width:260px; height:260px; right:-90px; top:-90px; border-radius:50%; background:var(--card-accent); filter:blur(70px); opacity:.22; transition:opacity .35s; }
+    .choice:hover { transform:translateY(-10px) scale(1.015); border-color:var(--card-accent); box-shadow:0 40px 70px -30px rgba(0,0,0,.9), 0 0 60px -10px var(--card-accent); }
+    .choice:hover::before { opacity:.5; }
+    .choice > * { position:relative; }
+    .choice .choice-symbol { background:rgba(255,255,255,.05); box-shadow:0 0 30px -6px var(--card-accent); }
+    .choice-name { font-weight:600; font-size:clamp(38px,4.5vw,56px); }
+    .choice-slide h1 { font-size:clamp(46px,7vw,96px); }
+    .cover-art .orbit { animation:spin 40s linear infinite; border-color:rgba(var(--accent-rgb),.3); }
+    .cover-art .orbit.inner { animation:spin 26s linear infinite reverse; }
+    .cover-art::before { content:''; position:absolute; inset:15%; border-radius:50%; background:radial-gradient(circle,rgba(var(--accent-rgb),.5),transparent 68%); filter:blur(30px); animation:pulse 4s ease-in-out infinite; }
+    @keyframes pulse { 50% { transform:scale(1.2); opacity:.6; } }
+    .assistant { box-shadow:0 0 90px rgba(var(--accent-rgb),.55), inset 0 -8px 20px rgba(0,0,0,.15); animation:float 5s ease-in-out infinite; }
+    .orbit-item { background:rgba(255,255,255,.08); backdrop-filter:blur(8px); box-shadow:0 14px 30px -10px rgba(0,0,0,.6); animation:float 6s ease-in-out infinite; }
+    .orbit-item.two { animation-delay:-1.5s; } .orbit-item.three { animation-delay:-3s; } .orbit-item.four { animation-delay:-4.5s; }
+
+    .install-link { background:linear-gradient(135deg,rgba(var(--accent-rgb),.25),rgba(var(--accent-rgb),.06)); box-shadow:0 0 50px -10px var(--glow); animation:glowpulse 3s ease-in-out infinite; }
+    @keyframes glowpulse { 50% { box-shadow:0 0 80px -6px var(--glow); } }
+    .install-extra .panel { padding:16px 20px; }
+
+    .chat-window,.terminal { box-shadow:0 40px 80px -30px rgba(0,0,0,.9), 0 0 60px -25px var(--glow); }
+    .window-bar::before { content:''; width:11px; height:11px; border-radius:50%; background:#ff5f57; box-shadow:18px 0 0 #febc2e, 36px 0 0 #28c840; margin-right:46px; flex:none; }
+    .message { animation:pop .5s cubic-bezier(.2,.8,.2,1) both; } .message:nth-child(2) { animation-delay:.35s; } .message:nth-child(3) { animation-delay:.7s; }
+    @keyframes pop { from { opacity:0; transform:translateY(10px) scale(.96); } }
+    .message.user { background:rgba(var(--accent-rgb),.18); border:1px solid rgba(var(--accent-rgb),.3); }
+    .terminal { background:rgba(8,10,8,.85); }
+    .terminal p span { text-shadow:0 0 12px var(--glow); }
+
+    .button-primary,.nav-button.next { box-shadow:0 10px 28px -8px var(--glow); transition:transform .2s, box-shadow .2s; }
+    .button-primary:hover,.nav-button.next:hover:not(:disabled) { transform:translateY(-2px) scale(1.04); box-shadow:0 14px 36px -6px var(--glow); filter:none; }
+    .nav-button { backdrop-filter:blur(8px); }
+    .footer { background:rgba(12,13,11,.55); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); }
+    .progress { height:4px; }
+    .progress-fill { background:linear-gradient(90deg,rgba(var(--accent-rgb),.4),var(--accent)); box-shadow:0 0 14px var(--accent); }
+    dialog { background:#14160f; box-shadow:0 40px 90px -20px #000; }
+
+    .slide.active { animation:none; }
+    .slide.active > * { animation:rise .7s cubic-bezier(.2,.8,.2,1) both; }
+    .slide.active > *:nth-child(1) { animation-delay:.02s; } .slide.active > *:nth-child(2) { animation-delay:.1s; } .slide.active > *:nth-child(3) { animation-delay:.18s; }
+    .slide.active > *:nth-child(4) { animation-delay:.26s; } .slide.active > *:nth-child(5) { animation-delay:.34s; } .slide.active > *:nth-child(6) { animation-delay:.42s; } .slide.active > *:nth-child(n+7) { animation-delay:.5s; }
+    @keyframes rise { from { opacity:0; transform:translateY(26px); filter:blur(6px); } to { opacity:1; transform:none; filter:none; } }
+    @media (max-width:760px) { .bg-fx .blob { filter:blur(60px); } .panel .emoji { width:58px; height:58px; font-size:32px; } }
+    @media (prefers-reduced-motion:reduce) { .bg-fx .blob,.brand-mark,.cover-art .orbit { animation:none!important; } }
+  </style>
+</head>
+<body>
+  <div class="bg-fx" aria-hidden="true"><i class="blob b1"></i><i class="blob b2"></i><i class="blob b3"></i><i class="grid-lines"></i><i class="grain"></i></div>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark" aria-hidden="true">✳</span><div><strong id="brand-name">IA, paso a paso</strong><small>Una guía para empezar</small></div></div>
+      <div class="top-actions">
+        <button class="quiet-button" id="switch-ai" aria-label="Cambiar la inteligencia artificial elegida" aria-haspopup="dialog" hidden><span class="theme-dot" aria-hidden="true"></span><span id="switch-label">Cambiar IA</span> ⇄</button>
+        <button class="quiet-button" id="fullscreen" aria-label="Activar pantalla completa. Atajo: tecla F" title="Pantalla completa (F)">⛶ <span class="fullscreen-label">Pantalla completa</span></button>
+      </div>
+    </header>
+    <main class="viewport" id="viewport" aria-label="Presentación: entendiendo la inteligencia artificial">
+      <section class="slide choice-slide active" id="slide-0" data-slide="0" aria-labelledby="title-0">
+        <div class="slide-top"><span class="eyebrow">Antes de empezar</span><span class="tag">Sin experiencia previa</span></div>
+        <h1 id="title-0" tabindex="-1">Elige tu <span class="accent">IA.</span></h1>
+        <p class="lead">Dos caminos para aprender lo mismo.<br>Elige la que quieres conocer hoy.</p>
+        <div class="choices">
+          <button class="choice claude" data-choose="claude" aria-label="Elegir Claude, de Anthropic, y empezar la presentación"><span class="choice-symbol" aria-hidden="true">✳</span><span class="choice-name">Claude</span><span class="choice-maker">Anthropic · terracota</span><span class="choice-cta"><span>Empezar con Claude</span><span aria-hidden="true">↗</span></span></button>
+          <button class="choice chatgpt" data-choose="chatgpt" aria-label="Elegir ChatGPT, de OpenAI, y empezar la presentación"><span class="choice-symbol" aria-hidden="true">◎</span><span class="choice-name">ChatGPT</span><span class="choice-maker">OpenAI · verde</span><span class="choice-cta"><span>Empezar con ChatGPT</span><span aria-hidden="true">↗</span></span></button>
+        </div>
+        <div class="analogy"><span class="analogy-icon" aria-hidden="true">↳</span><span>Es como elegir un guía: <strong>cambia la voz, el camino es parecido.</strong></span></div>
+        <p class="small">Puedes cambiar después. Esta presentación es una guía; no envía tus preguntas a ninguna IA.</p>
+      </section>
+      <div id="slides" hidden></div>
+      <noscript>Esta presentación necesita JavaScript para elegir la IA y mostrar las diapositivas. Actívalo en tu navegador y vuelve a abrir este archivo.</noscript>
+    </main>
+    <footer class="footer">
+      <div class="footer-main">
+        <span class="footer-caption" id="chapter-label">Elige tu compañero de ruta</span>
+        <span class="keyboard-hint"><kbd>←</kbd> <kbd>→</kbd> avanzar · <kbd>F</kbd> pantalla completa</span>
+        <nav class="navigation" aria-label="Navegación de diapositivas">
+          <button class="nav-button" id="prev" aria-label="Diapositiva anterior" disabled>←</button>
+          <span class="page-counter" id="page-counter" aria-label="Diapositiva 1 de 16"><strong>1</strong> / 16</span>
+          <button class="nav-button next" id="next" aria-label="Diapositiva siguiente. Primero elige una IA" disabled>→</button>
+        </nav>
+      </div>
+      <div class="progress" id="progress" role="progressbar" aria-label="Progreso de la presentación" aria-valuemin="0" aria-valuemax="15" aria-valuenow="0" aria-valuetext="Diapositiva 1 de 16"><div class="progress-fill" id="progress-fill"></div></div>
+    </footer>
+  </div>
+  <dialog id="choose-dialog" aria-labelledby="choose-title">
+    <div class="dialog-top"><h2 id="choose-title">Cambia de guía.</h2><button data-close="choose-dialog" aria-label="Cerrar selección de IA">×</button></div>
+    <p class="small">Los ejemplos y el color se adaptan. Seguirás en esta misma diapositiva.</p>
+    <div class="choices">
+      <button class="choice claude" data-choose="claude" aria-label="Cambiar a Claude"><span class="choice-symbol" aria-hidden="true">✳</span><span class="choice-name">Claude</span><span class="choice-maker">Anthropic</span></button>
+      <button class="choice chatgpt" data-choose="chatgpt" aria-label="Cambiar a ChatGPT"><span class="choice-symbol" aria-hidden="true">◎</span><span class="choice-name">ChatGPT</span><span class="choice-maker">OpenAI</span></button>
+    </div>
+  </dialog>
+  <dialog id="sources-dialog" aria-labelledby="sources-title">
+    <div class="dialog-top"><h2 id="sources-title">Para saber más.</h2><button data-close="sources-dialog" aria-label="Cerrar fuentes">×</button></div>
+    <p class="small">Documentación oficial del tema que estás viendo. Los enlaces necesitan internet.</p>
+    <ul class="source-list" id="source-list"></ul>
+    <p class="small">Consulta: 4 de octubre de 2026. Los nombres, la disponibilidad y los permisos pueden cambiar según la cuenta y la aplicación.</p>
+  </dialog>
+  <div class="sr-only" id="announcement" role="status" aria-live="polite" aria-atomic="true"></div>
+  <div class="toast" id="toast" role="status" hidden></div>
+  <script>
+    'use strict';
+
+    // Todo el contenido de cada recorrido vive en DATA; los conceptos comunes
+    // se comparten y los nombres, ejemplos, productos y fuentes se adaptan.
+    const SOURCES = {
+      claude: {
+        chat: ['Claude: qué es y para qué sirve', 'https://claude.com/product/overview'],
+        agent: ['Empezar con Claude Cowork', 'https://support.claude.com/en/articles/13345190-get-started-with-claude-cowork'],
+        code: ['Claude Code: descripción general', 'https://code.claude.com/docs/en/overview'],
+        skills: ['Personalizar Claude: conectores, skills y plugins', 'https://www-cdn.anthropic.com/files/4zrzovbb/website/34783bca828d7fa331f515ced26f1c9232151b2c.pdf'],
+        plugins: ['Personalizar Cowork con plugins', 'https://claude.com/blog/cowork-plugins']
+      },
+      chatgpt: {
+        chat: ['Usar ChatGPT', 'https://learn.chatgpt.com/docs/use-chatgpt'],
+        agent: ['Chat, Work y Codex: formas de trabajar', 'https://learn.chatgpt.com/docs/use-chatgpt'],
+        code: ['Codex en la terminal', 'https://learn.chatgpt.com/docs/codex/cli'],
+        skills: ['Personalizar ChatGPT', 'https://learn.chatgpt.com/docs/personalize'],
+        gpts: ['GPTs, apps y permisos', 'https://learn.chatgpt.com/docs/enterprise/gpts-and-sharing'],
+        plugins: ['Apps, skills y plugins en ChatGPT', 'https://learn.chatgpt.com/docs/build-plugins']
+      }
+    };
+    const escapeHTML = value => String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+    const emoji = value => '<span class="emoji" aria-hidden="true">' + value + '</span>';
+    const badge = approximate => approximate ? '<span class="badge">Equivalente aproximado</span>' : '';
+    const analogy = text => '<div class="analogy"><span class="analogy-icon" aria-hidden="true">↳</span><span>' + text + '</span></div>';
+    const example = (text, label = 'Por ejemplo') => '<div class="example"><small>' + label + '</small>' + text + '</div>';
+    const panel = (icon, title, text, extra = '', emphasis = false) => '<article class="panel' + (emphasis ? ' emphasis' : '') + '">' + emoji(icon) + '<h3>' + title + '</h3><p>' + text + '</p>' + extra + '</article>';
+    const flowNode = (icon, title, text, middle = false) => '<div class="flow-node' + (middle ? ' middle' : '') + '">' + emoji(icon) + '<strong>' + title + '</strong><small>' + text + '</small></div>';
+    const arrow = '<span class="flow-arrow" aria-hidden="true">→</span>';
+    const coverArt = '<div class="cover-art" aria-hidden="true"><div class="orbit"></div><div class="orbit inner"></div><div class="assistant"><svg viewBox="0 0 100 100" fill="none"><rect x="13" y="22" width="74" height="56" rx="22" stroke="currentColor" stroke-width="4"/><path d="M50 22V13" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><circle cx="50" cy="10" r="4" fill="currentColor"/><circle cx="35" cy="44" r="4" fill="currentColor"/><circle cx="65" cy="44" r="4" fill="currentColor"/><path d="M35 59Q50 72 65 59" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg></div><span class="orbit-item one">💬</span><span class="orbit-item two">💡</span><span class="orbit-item three">📝</span><span class="orbit-item four">🧭</span></div>';
+
+    function makeSlides(c) {
+      const n = escapeHTML(c.name);
+      const a = escapeHTML(c.agent.name);
+      const code = escapeHTML(c.code.name);
+      const skills = escapeHTML(c.skills.name);
+      const plugins = escapeHTML(c.plugins.name);
+      const source = SOURCES[c.key];
+      const slide = (title, chapter, body, options = {}) => ({ title, chapter, body, ...options });
+      return [
+        slide('Primero, ponlo en marcha.', 'Paso 0 · Instalación',
+          '<a class="install-link" href="' + escapeHTML(c.install.url) + '" target="_blank" rel="noopener noreferrer"><span class="install-link-label">Abre esta página</span><strong>' + escapeHTML(c.install.urlLabel) + '</strong><span aria-hidden="true">↗</span></a>' +
+          '<ol class="steps">' + c.install.steps.map(t => '<li><span>' + t + '</span></li>').join('') + '</ol>' +
+          '<div class="grid install-extra"><article class="panel"><h3>🖥️ ¿Prefieres una app?</h3><p>' + c.install.appText + ' <a class="inline-link" href="' + escapeHTML(c.install.appUrl) + '" target="_blank" rel="noopener noreferrer">' + escapeHTML(c.install.appLabel) + ' ↗</a></p></article>' +
+          '<article class="panel"><h3>⌨️ Solo si vas a programar</h3><p>' + c.install.devText + '</p><p><code>' + escapeHTML(c.install.devCmd) + '</code></p></article></div>' +
+          '<p class="small">Los pasos y nombres de los botones pueden cambiar un poco según tu país y dispositivo.</p>',
+          { sources:[source.chat] }),
+
+        slide('Entendiendo la IA', 'Tu punto de partida',
+          '<div class="cover-layout"><div class="cover-copy"><h1 id="title-1" tabindex="-1">Entendiendo<br>la <span class="accent">IA.</span></h1><p class="subtitle">Guía para empezar con <span class="accent">' + n + '</span></p><p class="lead">Preguntar. Probar. Revisar.<br>No necesitas saber de tecnología.</p>' + analogy('Es como conocer a <strong>un nuevo ayudante.</strong><br>Primero descubres qué puedes pedirle.') + '</div>' + coverArt + '</div>',
+          { customHeading:true, eyebrow:'Hola, ' + n, sources:[source.chat] }),
+
+        slide('Una ayuda que conversa.', 'Lo básico · Qué es la IA',
+          '<p class="lead">La inteligencia artificial puede escribir, resumir y explicar. ' + n + ' es una de estas herramientas.</p>' +
+          analogy('Es como un asistente que <strong>ha leído muchísimo</strong> y te ayuda a ordenar ideas.') +
+          '<div class="grid">' + panel('📚','Google: busca páginas','Es como una biblioteca con un índice. Te indica dónde encontrar información.','<p class="mini-example">«Receta de sopa» → enlaces a recetas.</p>') + panel('💬',n + ': conversa contigo','Es como un bibliotecario que te explica y adapta la respuesta. Puede equivocarse.','<p class="mini-example">«Tengo papa y zanahoria. Ayúdame a preparar una sopa».</p>',true) + '</div>' +
+          '<p class="small">También puede buscar en la web si tiene esa herramienta. Una explicación convincente no garantiza que sea cierta.</p>',
+          {sources:[source.chat]}),
+
+        slide('Completa una idea, paso a paso.', 'Lo básico · Cómo funciona',
+          '<p class="lead">Durante su entrenamiento aprende patrones de enormes cantidades de texto. Al responder, predice qué palabra sigue.</p>' +
+          analogy('Es como <strong>el autocompletado del teléfono, pero gigante.</strong> No guarda una respuesta perfecta para cada pregunta.') +
+          '<div class="flow" role="group" aria-label="Tú preguntas, la IA procesa tu mensaje y responde">' + flowNode('🙋','Tú preguntas','«¿Qué cocino con papa?»') + arrow + flowNode('✳','La IA «piensa»','Procesa tu mensaje y genera texto.',true) + arrow + flowNode('📝','Te responde','«Puedes hacer una sopa»') + '</div>' +
+          '<div class="autocomplete"><span>«Para hacer sopa, primero…»</span><span class="word">lava</span><span class="small">una continuación posible</span></div>' +
+          '<p class="small">«Piensa» es una forma de hablar: no piensa como una persona. No lo sabe todo y puede inventar detalles.</p>'),
+
+        slide('Útil, con límites.', 'Lo básico · Qué pedirle',
+          analogy('Es como un <strong>ayudante para un primer borrador.</strong> Tú revisas antes de usarlo.') +
+          '<div class="grid"><article class="panel emphasis">' + emoji('✅') + '<h3>' + n + ' puede ayudarte a…</h3><ul class="check-list"><li><span>✓</span>Resumir un texto que le compartas.</li><li><span>✓</span>Redactar un correo o darte ideas.</li><li><span>✓</span>Explicar algo con palabras sencillas.</li></ul></article><article class="panel">' + emoji('🛑') + '<h3>No puedes dar por hecho que…</h3><ul class="check-list"><li><span>×</span>Todo lo que dice es cierto.</li><li><span>×</span>Lee tus apps sin conexión y permiso.</li><li><span>×</span>Sustituye a un profesional o decide por ti.</li></ul></article></div>' +
+          '<div class="practice"><span>🔎 Verifica datos importantes.</span><span>🔐 No compartas contraseñas ni datos sensibles.</span></div>' +
+          example('Pide un borrador para cambiar una cita. Revisa el nombre y la fecha antes de enviarlo.')),
+
+        slide('Pedir bien cambia la respuesta.', 'Tu primera conversación · Prompts',
+          '<p class="lead">Un <strong class="accent">prompt</strong> es el mensaje con el que le pides algo a ' + n + '.</p>' +
+          analogy('Es como dar indicaciones a <strong>un taxista o un ayudante nuevo.</strong> «Llévame» no dice adónde.') +
+          '<div class="grid"><article class="panel prompt-panel"><span class="eyebrow">Poco claro</span><blockquote>«Hazme un correo».</blockquote><p class="hint">Falta saber para quién y para qué.</p></article><article class="panel emphasis prompt-panel"><span class="eyebrow">Más claro</span><blockquote>«Tengo una cita mañana. Escribe un correo para pedir otro día. Usa un tono amable y 4 líneas».</blockquote></article></div>' +
+          '<div class="formula" aria-label="Contexto más tarea más formato"><strong>Contexto</strong><span>+</span><strong>Tarea</strong><span>+</span><strong>Formato</strong></div>' +
+          '<p class="small">No tiene que salir perfecto. Puedes añadir: «Más corto» o «Dame otra opción».</p>'),
+
+        slide('El chat: empieza conversando.', 'Tus herramientas · Chat',
+          '<div class="chat-layout"><div class="chat-notes"><p class="lead">El chat de ' + n + ' sirve para preguntar, escribir y mejorar una idea contigo.</p>' + analogy('Es como <strong>mandar mensajes a un ayudante.</strong> Puedes hacer preguntas de seguimiento.') + '<div class="small">📝 Un correo más amable.<br>🥗 Ideas para la cena.<br>📖 Un texto explicado en sencillo.</div></div><div class="chat-window" role="group" aria-label="Ejemplo ilustrativo de una conversación"><div class="window-bar"><strong>' + n + '</strong><small>Ejemplo ilustrativo</small></div><div class="chat-messages"><div class="message user"><small>Tú</small>' + escapeHTML(c.chat.question) + '</div><div class="message ai"><span class="speaker">' + n + '</span>' + escapeHTML(c.chat.answer) + '</div><div class="message user"><small>Tú</small>' + escapeHTML(c.chat.followup) + '</div></div><div class="chat-input" aria-hidden="true"><span>Continúa la conversación</span><span>↑</span></div></div></div>' +
+          '<p class="small">Este chat es una muestra, no una conversación real con ' + n + '.</p>',
+          {sources:[source.chat]}),
+
+        slide('De aconsejar a hacer el trabajo.', 'Tus herramientas · Asistente que actúa',
+          '<div class="slide-top"><span class="tag">' + a + '</span>' + badge(c.agent.approximate) + '</div><p class="lead">' + escapeHTML(c.agent.description) + '</p>' +
+          analogy('Es como pasar de un <strong>consejero</strong> que te dice qué hacer a un <strong>asistente</strong> que hace la tarea.') +
+          '<div class="grid"><div class="task-board"><div class="task-row"><span aria-hidden="true">📂</span><div>' + escapeHTML(c.agent.input) + '<small>Le das acceso solo a lo necesario.</small></div></div><div class="task-rule"></div><div class="task-row"><span aria-hidden="true">⚙️</span><div>Trabaja en varios pasos<small>Lee, organiza y prepara el resultado.</small></div></div><div class="task-rule"></div><div class="task-row"><span aria-hidden="true">📄</span><div>' + escapeHTML(c.agent.output) + '<small>Tú revisas lo que hizo.</small></div></div></div>' + panel('🙋','Tú marcas el encargo','«' + escapeHTML(c.agent.example) + '»','<p class="mini-example">Revisa permisos y cambios. Confirma antes de enviar, borrar o comprar.</p>',true) + '</div>' +
+          '<p class="small">' + escapeHTML(c.agent.note) + '</p>',
+          {sources:[source.agent]}),
+
+        slide('Describe una idea. Construye algo.', 'Tus herramientas · Programación',
+          '<div class="slide-top"><span class="tag">' + code + '</span></div><p class="lead">' + escapeHTML(c.code.description) + '</p>' +
+          analogy('Es como un <strong>maestro de obra:</strong> le describes la casa y construye siguiendo tus indicaciones. La obra se revisa.') +
+          '<div class="grid"><div class="terminal"><div class="terminal-label">' + code + ' · ejemplo de encargo</div><p><span>›</span> Crea una página sencilla para mi panadería. Incluye el horario y un botón de contacto.</p><p class="result">Puede escribir archivos, probar el resultado y corregir problemas.</p></div><div class="site-mini" role="img" aria-label="Ejemplo de una página para una panadería, con horario y botón de contacto"><div class="site-label">Resultado posible · ilustración</div><h3>🥖 Pan de barrio</h3><p>Pan recién hecho, cada mañana.</p><p>Horario de ejemplo: lunes a sábado.</p><span class="fake-button">Contáctanos ↗</span></div></div>' +
+          '<p class="small">Es una herramienta para crear software. Necesita instrucciones, permisos y revisión; no garantiza una app lista a la primera.</p>',
+          {sources:[source.code]}),
+
+        slide('Conecta el lugar donde trabajas.', 'Tus herramientas · Conectores',
+          '<p class="lead">' + escapeHTML(c.connectors.description) + '</p>' +
+          analogy('Es como dar <strong>llaves de acceso a tu asistente.</strong> Tú eliges qué puerta puede abrir y puedes quitar el acceso.') +
+          '<div class="app-network" role="group" aria-label="Con permiso, ' + n + ' puede acceder a servicios conectados"><div class="network-center"><span aria-hidden="true">✳</span>' + n + '</div><span class="network-key" aria-hidden="true">🔑 →</span><div class="network-apps"><div>✉️ Gmail</div><div>📅 Calendar</div><div>📁 Drive</div></div></div>' +
+          example('«Resume mis correos de hoy y señala cuáles necesitan respuesta».' ,'Con el correo conectado y autorizado') +
+          '<p class="small">' + escapeHTML(c.connectors.note) + ' Leer correos y enviar mensajes son permisos distintos.</p>',
+          {sources:[source.plugins]}),
+
+        slide('Enséñale tu manera de hacerlo.', 'Tus herramientas · Skills',
+          '<div class="slide-top"><span class="tag">' + skills + '</span>' + badge(c.skills.approximate) + '</div><p class="lead">' + escapeHTML(c.skills.description) + '</p>' +
+          analogy('Es como una <strong>receta o un manual de procedimientos.</strong> Dejas los pasos escritos para repetir la tarea a tu manera.') +
+          '<div class="grid"><article class="panel emphasis"><h3>Mi receta para una reunión</h3><div class="recipe" style="margin-top:20px"><div class="recipe-step"><span>1</span>Resume lo que se decidió.</div><div class="recipe-step"><span>2</span>Lista las tareas y sus responsables.</div><div class="recipe-step"><span>3</span>Marca lo que quedó pendiente.</div></div></article>' + panel('🧑‍🍳','La próxima vez, usa la receta','«' + escapeHTML(c.skills.example) + '»','<p class="mini-example">Reutilizas las instrucciones. No necesitas explicar los pasos cada vez.</p>') + '</div>' +
+          '<p class="small">' + escapeHTML(c.skills.note) + '</p>',
+          {sources:c.key === 'chatgpt' ? [source.skills,source.gpts,source.plugins] : [source.skills]}),
+
+        slide('Una caja de herramientas completa.', 'Tus herramientas · Plugins',
+          '<div class="slide-top"><span class="tag">' + plugins + '</span>' + badge(c.plugins.approximate) + '</div><p class="lead">' + escapeHTML(c.plugins.description) + '</p>' +
+          analogy('Es como la <strong>caja de herramientas de un oficio:</strong> reúne lo que necesitas para un tipo de trabajo.') +
+          '<div class="grid"><article class="panel emphasis"><h3>' + escapeHTML(c.plugins.boxTitle) + '</h3><div class="toolbox"><div><span aria-hidden="true">📖</span>' + escapeHTML(c.plugins.parts[0]) + '</div><div><span aria-hidden="true">🔑</span>' + escapeHTML(c.plugins.parts[1]) + '</div><div><span aria-hidden="true">⌘</span>' + escapeHTML(c.plugins.parts[2]) + '</div></div></article>' + panel('🧰','Una tarea, varias herramientas','«' + escapeHTML(c.plugins.example) + '»','<p class="mini-example">La receta guía los pasos; la conexión trae la información.</p>') + '</div>' +
+          '<p class="small">' + escapeHTML(c.plugins.note) + ' Ningún paquete te da permisos que no hayas concedido.</p>',
+          {sources:[source.plugins]}),
+
+        slide('El mapa de tu nuevo ayudante.', 'Recapitulación · Cómo encaja todo',
+          analogy('Es como incorporar a un asistente: <strong>hablas, encargas, das acceso y enseñas tu forma de trabajar.</strong>') +
+          '<ol class="map" aria-label="Mapa de niveles de ayuda">' +
+          [['💬','Chat','Conversa',n,false],['⚙️','Agente','Hace tareas',c.agent.name,c.agent.approximate],['🔑','Conectores','Accede a apps',c.connectors.map,false],['📖','Skills','Sigue tu receta',c.skills.name,c.skills.approximate],['🧰','Plugins','Reúne herramientas',c.plugins.name,c.plugins.approximate]].map(item => '<li><span class="map-icon" aria-hidden="true">' + item[0] + '</span><div><h3>' + item[1] + '</h3><p class="map-function">' + item[2] + '</p></div><p class="map-product">' + escapeHTML(item[3]) + '</p>' + badge(item[4]) + '</li>').join('') + '</ol>' +
+          example('Conversar sobre un correo → preparar el borrador → leer el correo autorizado → seguir tu estilo → usar un conjunto de herramientas para tu trabajo.') +
+          '<p class="small">Es un mapa para entender las piezas, no una escalera obligatoria. Puedes empezar solo con el chat. ' + code + ' se especializa en construir software.</p>',
+          {sources:[source.agent,source.skills,source.plugins]}),
+
+        slide('La última palabra es tuya.', 'Uso responsable · Seguridad',
+          analogy('Es como conducir con un <strong>copiloto.</strong> Te orienta, pero tú mantienes las manos en el volante.') +
+          '<div class="grid three">' + panel('🔐','Cuida tu privacidad','Comparte solo lo necesario. Revisa los permisos y la configuración de privacidad.','<p class="mini-example">Quita nombres y números personales antes de pegar un texto.</p>') + panel('🔎','Comprueba lo importante','Revisa fuentes, fechas y resultados. Pide ayuda profesional cuando haga falta.','<p class="mini-example">Confirma una fecha en la página oficial antes de usarla.</p>') + panel('🙋','Tú decides','Revisa el resultado de ' + n + ' y sus acciones antes de aceptarlas.','<p class="mini-example">Lee un correo antes de autorizar su envío.</p>',true) + '</div>' +
+          '<p class="small">Trata con cuidado textos y archivos de origen desconocido: pueden contener instrucciones engañosas.</p>'),
+
+        slide('Hoy basta con una pequeña prueba.', 'Tu siguiente paso · A practicar',
+          analogy('Es como aprender una receta: <strong>empieza con algo sencillo y ajusta.</strong>') +
+          '<ol class="steps"><li>Abre ' + n + ' y elige una tarea pequeña.</li><li>Da contexto, tarea y formato.</li><li>Revisa y pide una mejora.</li></ol>' +
+          '<div class="copy-card"><div class="copy-top"><span>Tu primer prompt para ' + n + '</span><button class="button-primary" id="copy-prompt" aria-label="Copiar el ejemplo de prompt al portapapeles">Copiar ↗</button></div><textarea class="copy-prompt" id="first-prompt" readonly aria-label="Ejemplo de prompt; puedes seleccionarlo y copiarlo">' + escapeHTML(c.firstPrompt) + '</textarea></div>' +
+          '<div class="closing-links"><a href="' + c.url + '" target="_blank" rel="noopener noreferrer">Abrir ' + n + ' ↗</a><button class="quiet-button" id="restart" aria-label="Volver a la portada de la IA elegida">Volver al inicio ↺</button><span class="small">No necesitas la pregunta perfecta.</span></div>',
+          {sources:[source.chat]})
+      ];
+    }
+
+    const DATA = {
+      claude: {
+        key:'claude', name:'Claude', maker:'Anthropic', symbol:'✳', url:'https://claude.ai/',
+        theme:{accent:'#eda784', dark:'#2c1c14', rgb:'237,167,132'},
+        chat:{question:'Tengo arroz y verduras. ¿Qué puedo cocinar?',answer:'Puedes hacer arroz salteado con verduras. ¿El arroz ya está cocido?',followup:'Sí. Dame los pasos en una lista corta.'},
+        agent:{name:'Claude Cowork',approximate:false,description:'Trabaja con tus archivos y carpetas desde la app de escritorio de Claude, con tu permiso. Puede preparar documentos y hacer tareas de oficina.',input:'Una carpeta con notas',output:'Un resumen en un documento',example:'Lee las notas de esta carpeta y crea un resumen. Conserva los originales.',note:'El acceso a archivos locales necesita la app de escritorio y permisos. Las opciones dependen de tu cuenta.'},
+        code:{name:'Claude Code',description:'Es un agente de programación: crea y modifica software a partir de instrucciones en lenguaje cotidiano. Se usa en la terminal o en la app de escritorio.'},
+        connectors:{description:'Los conectores permiten que Claude consulte servicios como Gmail, Calendar o Drive, según lo que hayas conectado y autorizado.',map:'Conectores',note:'La disponibilidad y las acciones dependen del conector y de tu cuenta.'},
+        skills:{name:'Skills',approximate:false,description:'Son instrucciones y recursos reutilizables que enseñan a Claude a realizar una tarea de una forma concreta.',example:'Usa mi skill de resumen de reuniones con estas notas.',note:'Una skill indica cómo hacer la tarea; no abre por sí sola tus apps.'},
+        plugins:{name:'Plugins',approximate:false,description:'Son paquetes para un trabajo o rol. Pueden reunir skills, conectores y comandos en un solo conjunto.',boxTitle:'Un plugin para tareas de oficina',parts:['Skills: recetas','Conectores: acceso','Comandos: atajos'],example:'Prepara el resumen semanal con las notas autorizadas y mi formato habitual.',note:'Un comando es un atajo para iniciar una tarea. El contenido varía entre plugins.'},
+        install:{url:'https://claude.ai/',urlLabel:'claude.ai',appUrl:'https://claude.com/download',appLabel:'claude.com/download',appText:'Puedes descargar la app de escritorio o la del celular. Se usa igual que la web.',devText:'Claude Code se instala desde la terminal. En Windows (PowerShell):',devCmd:'irm https://claude.ai/install.ps1 | iex',steps:['Entra a <strong>claude.ai</strong> desde cualquier navegador.','Toca <strong>Continuar con Google</strong> o escribe tu correo, y confirma el código que te llega.','Escribe tu primera pregunta en el cuadro de abajo y pulsa Enter.']},
+        firstPrompt:'Claude, tengo arroz y verduras y quiero preparar una cena sencilla. Dame una receta en 5 pasos, con ingredientes comunes. Si falta un dato importante, pregúntame antes.'
+      },
+      chatgpt: {
+        key:'chatgpt', name:'ChatGPT', maker:'OpenAI', symbol:'◎', url:'https://chatgpt.com/',
+        theme:{accent:'#8edcc1', dark:'#102c23', rgb:'142,220,193'},
+        chat:{question:'Tengo pasta y tomate. ¿Qué puedo cocinar?',answer:'Puedes preparar pasta con una salsa de tomate sencilla. ¿Tienes aceite y sal?',followup:'Sí. Dame los pasos en una lista corta.'},
+        agent:{name:'Modo Agente',approximate:true,description:'Puede llevar una tarea por varios pasos y usar las herramientas y archivos disponibles, con los permisos necesarios. Tú describes el resultado y revisas el trabajo.',input:'Archivos que compartas',output:'Un informe para revisar',example:'Lee estas notas adjuntas y prepara un informe breve. No envíes nada.',note:'No funciona igual que Cowork con carpetas locales. Algunas interfaces muestran Work; el nombre y el acceso dependen de tu cuenta.'},
+        code:{name:'Codex',description:'Es el agente de programación de OpenAI: crea y modifica software a partir de instrucciones en lenguaje cotidiano. Se usa en la terminal, apps y editores compatibles.'},
+        connectors:{description:'Las apps conectadas permiten que ChatGPT consulte servicios como Gmail, Calendar o Drive, según las conexiones y permisos disponibles.',map:'Apps conectadas',note:'Puedes ver estas conexiones como Apps o dentro de Plugins, según la interfaz.'},
+        skills:{name:'GPTs personalizados / instrucciones personalizadas',approximate:true,description:'Son formas de guardar instrucciones para que ChatGPT siga tu estilo o una tarea. Aquí las comparamos con una receta reutilizable.',example:'Resume estas notas con las instrucciones de mi GPT de reuniones.',note:'No son lo mismo que una skill. Las instrucciones personalizadas guían tus chats; un GPT configura un asistente. Algunas interfaces ya incluyen Skills y Plugins; los GPTs están cambiando en ciertos entornos.'},
+        plugins:{name:'Apps / GPTs',approximate:true,description:'Una app aporta una conexión o herramienta. Un GPT añade instrucciones y recursos para una tarea. Son una comparación aproximada con la caja de herramientas de un rol.',boxTitle:'Un conjunto para tareas de oficina',parts:['Instrucciones: receta','Apps: acceso','GPT: asistente'],example:'Con mi asistente configurado, prepara el resumen de los documentos que autorizo.',note:'Apps y GPTs no forman necesariamente un único paquete. Algunas interfaces de ChatGPT también ofrecen Plugins que reúnen apps y skills.'},
+        install:{url:'https://chatgpt.com/',urlLabel:'chatgpt.com',appUrl:'https://chatgpt.com/download',appLabel:'chatgpt.com/download',appText:'Puedes descargar la app de escritorio o la del celular. Se usa igual que la web.',devText:'Codex se instala desde la terminal, con Node.js ya instalado:',devCmd:'npm install -g @openai/codex',steps:['Entra a <strong>chatgpt.com</strong> desde cualquier navegador.','Toca <strong>Registrarse</strong>, usa tu correo o tu cuenta de Google y confirma el código que te llega.','Escribe tu primera pregunta en el cuadro de abajo y pulsa Enter.']},
+        firstPrompt:'ChatGPT, tengo pasta y tomate y quiero preparar una cena sencilla. Dame una receta en 5 pasos, con ingredientes comunes. Si falta un dato importante, pregúntame antes.'
+      }
+    };
+    DATA.claude.slides = makeSlides(DATA.claude);
+    DATA.chatgpt.slides = makeSlides(DATA.chatgpt);
+
+    const TOTAL = 16;
+    const $ = id => document.getElementById(id);
+    let chosen = null;
+    let current = 0;
+    let toastTimer;
+    let touchStart = null;
+
+    function renderSlides(data) {
+      $('slides').innerHTML = data.slides.map((s,index) => {
+        const number = index + 1;
+        const heading = s.customHeading ? '' : '<h2 id="title-' + number + '" tabindex="-1">' + s.title + '</h2>';
+        const sources = s.sources ? '<div class="source-line"><span class="small">Las funciones disponibles pueden variar según tu cuenta.</span><button class="quiet-button source-link" data-sources="' + number + '" aria-label="Ver fuentes oficiales de esta diapositiva" aria-haspopup="dialog">Fuentes ↗</button></div>' : '';
+        return '<section class="slide" id="slide-' + number + '" data-slide="' + number + '" aria-labelledby="title-' + number + '" hidden><div class="slide-top"><span class="eyebrow">' + escapeHTML(s.eyebrow || s.chapter) + '</span><span class="tag">' + String(number).padStart(2,'0') + '</span></div>' + heading + s.body + sources + '</section>';
+      }).join('');
+    }
+
+    function showSlide(index, focus = false) {
+      if (!chosen && index > 0) return;
+      current = Math.max(0,Math.min(TOTAL - 1,index));
+      $('slides').hidden = current === 0;
+      document.querySelectorAll('section[data-slide]').forEach(section => {
+        const active = Number(section.dataset.slide) === current;
+        section.hidden = !active;
+        section.classList.toggle('active',active);
+      });
+      $('viewport').scrollTop = 0;
+      $('prev').disabled = current === 0;
+      $('next').disabled = !chosen || current === TOTAL - 1;
+      $('next').setAttribute('aria-label',!chosen ? 'Diapositiva siguiente. Primero elige una IA' : 'Diapositiva siguiente');
+      $('page-counter').innerHTML = '<strong>' + (current + 1) + '</strong> / ' + TOTAL;
+      $('page-counter').setAttribute('aria-label','Diapositiva ' + (current + 1) + ' de ' + TOTAL);
+      $('progress-fill').style.width = (current / (TOTAL - 1) * 100) + '%';
+      $('progress').setAttribute('aria-valuenow',String(current));
+      $('progress').setAttribute('aria-valuetext','Diapositiva ' + (current + 1) + ' de ' + TOTAL);
+      const s = current && chosen ? DATA[chosen].slides[current - 1] : null;
+      $('chapter-label').textContent = s ? s.chapter.split(' · ').pop() : 'Elige tu compañero de ruta';
+      $('announcement').textContent = 'Diapositiva ' + (current + 1) + ' de ' + TOTAL + ': ' + (s ? s.title : 'Elige tu IA');
+      if (focus) $('title-' + current).focus({preventScroll:true});
+    }
+
+    function chooseAI(key) {
+      if (!Object.prototype.hasOwnProperty.call(DATA,key)) return;
+      const wasAtChoice = current === 0;
+      chosen = key;
+      const data = DATA[key];
+      document.documentElement.dataset.theme = key;
+      document.documentElement.style.setProperty('--accent',data.theme.accent);
+      document.documentElement.style.setProperty('--accent-dark',data.theme.dark);
+      document.documentElement.style.setProperty('--accent-rgb',data.theme.rgb);
+      document.title = 'Entendiendo la IA · Guía para empezar con ' + data.name;
+      $('brand-name').textContent = data.name + ', paso a paso';
+      document.querySelector('.brand-mark').textContent = data.symbol;
+      $('switch-label').textContent = data.name;
+      $('switch-ai').hidden = false;
+      renderSlides(data);
+      if ($('choose-dialog').open) $('choose-dialog').close();
+      showSlide(wasAtChoice ? 1 : current,true);
+    }
+
+    function showToast(message) {
+      clearTimeout(toastTimer);
+      $('toast').textContent = message;
+      $('toast').hidden = false;
+      toastTimer = setTimeout(() => { $('toast').hidden = true; },3500);
+    }
+
+    async function copyPrompt() {
+      const field = $('first-prompt');
+      if (!field) return;
+      let copied = false;
+      if (navigator.clipboard && window.isSecureContext) {
+        try { await navigator.clipboard.writeText(field.value); copied = true; } catch (error) { /* El archivo local puede restringir el portapapeles. */ }
+      }
+      if (!copied) {
+        field.focus();
+        field.select();
+        field.setSelectionRange(0,field.value.length);
+        try { copied = document.execCommand('copy'); } catch (error) { copied = false; }
+      }
+      if (copied) { showToast('Prompt copiado. Pégalo en ' + DATA[chosen].name + '.'); $('copy-prompt').focus({preventScroll:true}); }
+      else showToast('Texto seleccionado. Usa Ctrl+C o mantén pulsado para copiar.');
+    }
+
+    async function toggleFullscreen() {
+      try {
+        if (document.fullscreenElement) await document.exitFullscreen();
+        else if (document.documentElement.requestFullscreen) await document.documentElement.requestFullscreen();
+        else showToast('Este navegador no permite pantalla completa.');
+      } catch (error) { showToast('No se pudo abrir pantalla completa en este navegador.'); }
+    }
+
+    function openSources(index) {
+      if (!chosen) return;
+      const slide = DATA[chosen].slides[index - 1];
+      if (!slide || !slide.sources) return;
+      $('source-list').innerHTML = slide.sources.map(source => '<li><a href="' + escapeHTML(source[1]) + '" target="_blank" rel="noopener noreferrer">' + escapeHTML(source[0]) + ' ↗</a></li>').join('');
+      $('sources-dialog').showModal();
+    }
+
+    document.addEventListener('click',event => {
+      const target = event.target.closest('button');
+      if (!target || target.disabled) return;
+      if (target.dataset.choose) chooseAI(target.dataset.choose);
+      else if (target.dataset.close) $(target.dataset.close).close();
+      else if (target.dataset.sources) openSources(Number(target.dataset.sources));
+      else if (target.id === 'prev') showSlide(current - 1,true);
+      else if (target.id === 'next') showSlide(current + 1,true);
+      else if (target.id === 'switch-ai') $('choose-dialog').showModal();
+      else if (target.id === 'copy-prompt') copyPrompt();
+      else if (target.id === 'restart') showSlide(1,true);
+      else if (target.id === 'fullscreen') toggleFullscreen();
+    });
+
+    document.addEventListener('keydown',event => {
+      if (event.altKey || event.ctrlKey || event.metaKey || document.querySelector('dialog[open]')) return;
+      if (event.target.closest('textarea,input,select,[contenteditable="true"]')) return;
+      if (event.key.toLowerCase() === 'f') { event.preventDefault(); toggleFullscreen(); return; }
+      if (event.key === 'ArrowRight' || event.key === 'ArrowDown') { event.preventDefault(); showSlide(current + 1,true); }
+      else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') { event.preventDefault(); showSlide(current - 1,true); }
+      else if (event.key === 'Home') { event.preventDefault(); showSlide(chosen ? 1 : 0,true); }
+      else if (event.key === 'End' && chosen) { event.preventDefault(); showSlide(TOTAL - 1,true); }
+    });
+
+    $('viewport').addEventListener('touchstart',event => {
+      if (event.touches.length !== 1 || event.target.closest('button,a,textarea,input')) { touchStart = null; return; }
+      touchStart = {x:event.touches[0].clientX,y:event.touches[0].clientY,time:Date.now()};
+    },{passive:true});
+    $('viewport').addEventListener('touchend',event => {
+      if (!touchStart || !event.changedTouches.length) return;
+      const dx = event.changedTouches[0].clientX - touchStart.x;
+      const dy = event.changedTouches[0].clientY - touchStart.y;
+      if (Math.abs(dx) > 65 && Math.abs(dx) > Math.abs(dy) * 1.5 && Date.now() - touchStart.time < 900) showSlide(current + (dx < 0 ? 1 : -1));
+      touchStart = null;
+    },{passive:true});
+    $('viewport').addEventListener('touchcancel',() => { touchStart = null; },{passive:true});
+
+    document.addEventListener('fullscreenchange',() => {
+      const active = Boolean(document.fullscreenElement);
+      $('fullscreen').setAttribute('aria-label',active ? 'Salir de pantalla completa. Atajo: tecla F' : 'Activar pantalla completa. Atajo: tecla F');
+      $('fullscreen').setAttribute('aria-pressed',String(active));
+    });
+    document.querySelectorAll('dialog').forEach(dialog => {
+      dialog.addEventListener('click',event => {
+        if (event.target !== dialog) return;
+        const rect = dialog.getBoundingClientRect();
+        if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dialog.close();
+      });
+    });
+
+    // Una sola pantalla visible; elegir una IA crea las otras 15 diapositivas.
+    showSlide(0);
+  </script>
+</body>
+</html>
